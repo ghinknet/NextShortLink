@@ -1,7 +1,5 @@
 package model
 
-import "time"
-
 // DatabaseConfig table 'config'
 type DatabaseConfig struct {
 	Key   int64        `xorm:"pk int notnull 'key'"`
@@ -58,55 +56,13 @@ func (DatabasePackage) TableName() string {
 	return "package"
 }
 
-// DatabaseCNID table 'cnid'
-type DatabaseCNID struct {
-	IDEncrypted     string `xorm:"text notnull unique 'id_encrypted'"`
-	NameEncrypted   string `xorm:"text notnull 'name_encrypted'"`
-	IDFingerprint   string `xorm:"text notnull unique 'id_fingerprint'"`
-	NameFingerprint string `xorm:"text notnull 'name_fingerprint'"`
+// DatabaseLink table 'links'
+type DatabaseLink struct {
+	ID       int64  `xorm:"pk autoincr 'id'"`
+	Link     string `xorm:"text notnull 'link'"`
+	Validity *int64 `xorm:"bigint 'validity'"`
 }
 
-func (DatabaseCNID) TableName() string {
-	return "cnid"
-}
-
-// DatabaseMusic404 table 'music_404'
-type DatabaseMusic404 struct {
-	ID     int64  `xorm:"pk autoincr 'id'"`
-	Name   string `xorm:"text notnull 'name'"`
-	Artist string `xorm:"text notnull 'artist'"`
-	Audio  string `xorm:"text notnull 'audio'"`
-	Cover  string `xorm:"text notnull 'cover'"`
-}
-
-func (DatabaseMusic404) TableName() string {
-	return "music404"
-}
-
-// DatabaseGreyFilter table 'grey_filter'
-type DatabaseGreyFilter struct {
-	ID          int64  `xorm:"pk autoincr 'id'"`
-	Slot        string `xorm:"text notnull 'slot'"`
-	Object      string `xorm:"text notnull 'object'"`
-	Rule        string `xorm:"text notnull 'rule'"`
-	Description string `xorm:"text notnull 'description'"`
-}
-
-func (DatabaseGreyFilter) TableName() string {
-	return "grey_filter"
-}
-
-// DatabaseFurpassCase table 'furpass_case'
-type DatabaseFurpassCase struct {
-	ID        int64     `xorm:"pk autoincr 'id'"`
-	Name      string    `xorm:"text notnull 'name'"`
-	BeginDate time.Time `xorm:"date notnull 'begin_date'"`
-	EndDate   time.Time `xorm:"date notnull 'end_date'"`
-	Location  string    `xorm:"text notnull 'location'"`
-	Cover     string    `xorm:"text notnull 'cover'"`
-	Link      string    `xorm:"text 'link'"`
-}
-
-func (DatabaseFurpassCase) TableName() string {
-	return "furpass_case"
+func (DatabaseLink) TableName() string {
+	return "links"
 }

@@ -65,3 +65,7 @@ func RespNoPackageAvailable(c fiber.Ctx) error {
 func RespApplicationNotFound(c fiber.Ctx) error {
 	return Resp(c, CodeApplicationNotFound, nil, "application not found")
 }
+
+func RespLinkNotExist(c fiber.Ctx) error {
+	return Resp(c, CodeLinkNotExist, nil, "link does not exist")
+}

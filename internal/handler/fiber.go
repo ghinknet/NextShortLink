@@ -7,7 +7,6 @@ import (
 	"NextShortLink/internal/model"
 	"fmt"
 	"net/http"
-	"time"
 
 	"github.com/bytedance/sonic"
 	"github.com/go-playground/validator/v10"
@@ -61,21 +60,9 @@ func fiberAPP() *fiber.App {
 	// Use customer header middleware
 	app.Use(middleware.CustomHeader)
 
-	// Ping test router handler
-	app.All("/ping", func(c fiber.Ctx) error {
-		return model.RespSuccess(c, map[string]any{
-			"msg":   "pong",
-			"stamp": float64(time.Now().UnixNano()) / 1e9,
-		})
-	})
-
 	// Root info router handler
 	app.All("/", func(c fiber.Ctx) error {
-		return model.RespSuccess(c, map[string]any{
-			"poweredBy":   fmt.Sprintf("%s %s", config.ENName, config.Version),
-			"techSupport": "Ghink Universe",
-			"techContact": "service@ghink.net",
-		})
+		return c.Redirect().Status(model.CodeFound).To(config.C.GetString("index"))
 	})
 
 	// Register global routes

@@ -4,6 +4,8 @@ import "net/http"
 
 const CodeOK = http.StatusOK
 
+const CodeFound = http.StatusFound
+
 const CodeBadRequest = http.StatusBadRequest
 const CodeUnauthorized = http.StatusUnauthorized
 const CodeForbidden = http.StatusForbidden
@@ -18,3 +20,4 @@ const CodeMissingParameter = 800
 const CodePermissionDenied = 801
 const CodeNoPackageAvailable = 802
 const CodeApplicationNotFound = 803
+const CodeLinkNotExist = 804

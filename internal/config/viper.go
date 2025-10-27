@@ -1,10 +1,15 @@
 package config
 
 import (
+	"fmt"
+	"os"
+
+	"github.com/bytedance/sonic"
 	"github.com/spf13/viper"
 )
 
 var C *viper.Viper
+var Field = make(map[rune]int64)
 
 // staticConfig is constructor of static config
 func staticConfig() *viper.Viper {
@@ -43,8 +48,37 @@ func staticConfig() *viper.Viper {
 	return cfg
 }
 
+// LoadField loads fieldMap from config
+func LoadField() {
+	// Read field
+	var data []byte
+	var err error
+	if C.GetBool("debug") {
+		data, err = os.ReadFile("field_debug.json")
+	} else {
+		data, err = os.ReadFile("field.json")
+	}
+	if err != nil {
+		panic(err)
+	}
+
+	var resultMap map[string]int64
+
+	// Parse json
+	if err = sonic.Unmarshal(data, &resultMap); err != nil {
+		panic(err)
+	}
+
+	// Fill field
+	for k, v := range resultMap {
+		Field[[]rune(k)[0]] = v
+	}
+}
+
 // LoadStatic loads static config
 func LoadStatic() *viper.Viper {
 	C = staticConfig()
+	LoadField()
+	fmt.Println(Field)
 	return C
 }
