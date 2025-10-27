@@ -21,3 +21,5 @@ const CodePermissionDenied = 801
 const CodeNoPackageAvailable = 802
 const CodeApplicationNotFound = 803
 const CodeLinkNotExist = 804
+const CodeLinkInvalid = 805
+const CodeValidityInvalid = 806

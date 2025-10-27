@@ -13,10 +13,12 @@ func Redirect(c fiber.Ctx) error {
 	// Get link
 	dest, err := link.GetLink(c.Params("linkID"))
 	if err != nil {
-		if errors.Is(err, model.ErrLinkNotExist) {
+		switch {
+		case errors.Is(err, model.ErrLinkNotExist):
 			return model.RespLinkNotExist(c)
+		default:
+			return model.RespInternalServerError(c, err)
 		}
-		return model.RespInternalServerError(c, err)
 	}
 	return c.Redirect().Status(model.CodeFound).To(dest)
 }

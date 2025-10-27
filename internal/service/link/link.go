@@ -4,6 +4,7 @@ import (
 	"NextShortLink/internal/cache"
 	"NextShortLink/internal/config"
 	"NextShortLink/internal/database"
+	"NextShortLink/internal/model"
 	"NextShortLink/internal/repository"
 	"context"
 	"fmt"
@@ -22,7 +23,12 @@ func intPow(base, exp int64) int64 {
 
 // GetLink reads link of linkID
 func GetLink(linkID string) (string, error) {
-	// TODO: Check charset to return 404
+	// Check charset
+	for _, char := range linkID {
+		if _, exists := config.Field[char]; !exists {
+			return "", model.ErrLinkNotExist
+		}
+	}
 
 	// Check redis cache
 	exists, err := cache.R.Exists(

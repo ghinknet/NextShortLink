@@ -61,7 +61,7 @@ func fiberAPP() *fiber.App {
 	app.Use(middleware.CustomHeader)
 
 	// Root info router handler
-	app.All("/", func(c fiber.Ctx) error {
+	app.Get("/", func(c fiber.Ctx) error {
 		return c.Redirect().Status(model.CodeFound).To(config.C.GetString("index"))
 	})
 

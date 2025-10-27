@@ -69,3 +69,11 @@ func RespApplicationNotFound(c fiber.Ctx) error {
 func RespLinkNotExist(c fiber.Ctx) error {
 	return Resp(c, CodeLinkNotExist, nil, "link does not exist")
 }
+
+func RespLinkInvalid(c fiber.Ctx) error {
+	return Resp(c, CodeLinkInvalid, nil, "link invalid")
+}
+
+func RespValidityInvalid(c fiber.Ctx) error {
+	return Resp(c, CodeValidityInvalid, nil, "validity invalid")
+}

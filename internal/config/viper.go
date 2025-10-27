@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/bytedance/sonic"
@@ -79,6 +78,5 @@ func LoadField() {
 func LoadStatic() *viper.Viper {
 	C = staticConfig()
 	LoadField()
-	fmt.Println(Field)
 	return C
 }

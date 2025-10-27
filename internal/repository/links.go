@@ -16,6 +16,9 @@ func NewLinkRepository(session *xorm.Session) *LinkRepository {
 }
 
 func (r *LinkRepository) Read(linkID int64) (string, *int64, error) {
+	// Offset
+	linkID -= 4000
+
 	link := new(model.DatabaseLink)
 	has, err := r.session.ID(linkID).Get(link)
 	if err != nil {
@@ -34,4 +37,16 @@ func (r *LinkRepository) Read(linkID int64) (string, *int64, error) {
 	}
 
 	return link.Link, link.Validity, nil
+}
+
+func (r *LinkRepository) Insert(link *model.DatabaseLink) error {
+	_, err := r.session.Insert(link)
+	if err != nil {
+		return err
+	}
+
+	// Offset
+	link.ID += 4000
+	
+	return nil
 }
