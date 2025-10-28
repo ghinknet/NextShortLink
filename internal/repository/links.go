@@ -47,6 +47,14 @@ func (r *LinkRepository) Insert(link *model.DatabaseLink) error {
 
 	// Offset
 	link.ID += 4000
-	
+
+	return nil
+}
+
+func (r *LinkRepository) DeleteExpired() error {
+	_, err := r.session.Where("validity < EXTRACT(EPOCH FROM NOW())").Delete(&model.DatabaseLink{})
+	if err != nil {
+		return err
+	}
 	return nil
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"NextShortLink/internal/cache"
 	"NextShortLink/internal/config"
+	"NextShortLink/internal/cron"
 	"NextShortLink/internal/database"
 	"NextShortLink/internal/handler"
 	"NextShortLink/internal/logger"
@@ -16,7 +17,7 @@ import (
 func main() {
 	// Load static config
 	config.LoadStatic()
-	
+
 	// Init logger
 	logger.InitLogger()
 	defer func(L *zap.Logger) {
@@ -42,6 +43,9 @@ func main() {
 	if err := configRepo.Init(); err != nil {
 		logger.L.Fatal(err.Error())
 	}
+
+	// Init cron
+	cron.InitCron()
 
 	// Start HTTP server
 	handler.RunHTTPServer()
