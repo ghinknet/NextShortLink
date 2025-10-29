@@ -50,9 +50,9 @@ func InitLogger() {
 	if logFile != "" {
 		fileWriter := &lumberjack.Logger{
 			Filename:   logFile,
-			MaxSize:    config.C.GetInt("log.max_size"),
-			MaxBackups: config.C.GetInt("log.max_backups"),
-			MaxAge:     config.C.GetInt("log.max_age"),
+			MaxSize:    config.C.GetInt("log.maxSize"),
+			MaxBackups: config.C.GetInt("log.maxBackups"),
+			MaxAge:     config.C.GetInt("log.maxAge"),
 			Compress:   config.C.GetBool("log.compress"),
 			LocalTime:  true,
 		}

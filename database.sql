@@ -1,6 +1,6 @@
 CREATE TABLE config (
     key   INTEGER PRIMARY KEY,
-    value JSONB NOT NULL
+    value JSONB   NOT NULL
 );
 
 CREATE TABLE application (
@@ -37,8 +37,8 @@ CREATE TABLE package (
 
 CREATE TABLE links (
     id       BIGSERIAL PRIMARY KEY,
-    link     TEXT NOT NULL,
-    validity BIGINT DEFAULT NULL
+    link     TEXT      NOT NULL,
+    validity BIGINT    DEFAULT NULL
 );
 
 CREATE INDEX CONCURRENTLY idx_links_link_hash ON links USING hash(link);
