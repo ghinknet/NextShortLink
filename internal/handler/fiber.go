@@ -62,7 +62,7 @@ func fiberAPP() *fiber.App {
 
 	// Root info router handler
 	app.Get("/", func(c fiber.Ctx) error {
-		return c.Redirect().Status(model.CodeFound).To(config.C.GetString("index"))
+		return c.Redirect().Status(http.StatusFound).To(config.C.GetString("index"))
 	})
 
 	// Register global routes

@@ -4,6 +4,7 @@ import (
 	"NextShortLink/internal/model"
 	"NextShortLink/internal/service/link"
 	"errors"
+	"net/http"
 
 	"github.com/gofiber/fiber/v3"
 )
@@ -20,5 +21,5 @@ func Redirect(c fiber.Ctx) error {
 			return model.RespInternalServerError(c, err)
 		}
 	}
-	return c.Redirect().Status(model.CodeFound).To(dest)
+	return c.Redirect().Status(http.StatusFound).To(dest)
 }
