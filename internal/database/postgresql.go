@@ -5,8 +5,8 @@ import (
 	"NextShortLink/internal/logger"
 	"fmt"
 
+	"github.com/ghinknet/xormzap"
 	_ "github.com/lib/pq"
-	"github.com/yxlimo/xormzap"
 	"xorm.io/xorm"
 )
 
