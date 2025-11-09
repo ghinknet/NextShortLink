@@ -3,7 +3,7 @@ module NextShortLink
 go 1.25.3
 
 require (
-	github.com/bytedance/sonic v1.14.2
+	github.com/ghinknet/json v1.0.0
 	github.com/ghinknet/xormzap v1.0.0
 	github.com/go-playground/validator/v10 v10.28.0
 	github.com/gofiber/contrib/v3/zap v1.0.0-rc.1
@@ -21,6 +21,7 @@ require (
 require (
 	github.com/andybalholm/brotli v1.2.0 // indirect
 	github.com/bytedance/gopkg v0.1.3 // indirect
+	github.com/bytedance/sonic v1.14.2 // indirect
 	github.com/bytedance/sonic/loader v0.4.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudwego/base64x v0.1.6 // indirect

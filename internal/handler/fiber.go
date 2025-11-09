@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/bytedance/sonic"
+	"github.com/ghinknet/json"
 	"github.com/go-playground/validator/v10"
 	fiberzap "github.com/gofiber/contrib/v3/zap"
 	"github.com/gofiber/fiber/v3"
@@ -33,8 +33,8 @@ func (v *structValidator) Validate(out any) error {
 // fiberAPP provides a fiber app
 func fiberAPP() *fiber.App {
 	app := fiber.New(fiber.Config{
-		JSONEncoder:     sonic.Marshal,
-		JSONDecoder:     sonic.Unmarshal,
+		JSONEncoder:     json.Marshal,
+		JSONDecoder:     json.Unmarshal,
 		ProxyHeader:     fiber.HeaderXForwardedFor,
 		StructValidator: &structValidator{validate: validator.New()},
 	})

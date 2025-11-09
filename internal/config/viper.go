@@ -3,7 +3,7 @@ package config
 import (
 	"os"
 
-	"github.com/bytedance/sonic"
+	"github.com/ghinknet/json"
 	"github.com/spf13/viper"
 )
 
@@ -64,7 +64,7 @@ func LoadField() {
 	var resultMap map[string]int64
 
 	// Parse json
-	if err = sonic.Unmarshal(data, &resultMap); err != nil {
+	if err = json.Unmarshal(data, &resultMap); err != nil {
 		panic(err)
 	}
 
