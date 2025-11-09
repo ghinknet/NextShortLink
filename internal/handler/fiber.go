@@ -10,7 +10,7 @@ import (
 
 	"github.com/bytedance/sonic"
 	"github.com/go-playground/validator/v10"
-	"github.com/gofiber/contrib/fiberzap/v2"
+	fiberzap "github.com/gofiber/contrib/v3/zap"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/adaptor"
 	"github.com/gofiber/fiber/v3/middleware/requestid"

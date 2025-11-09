@@ -6,9 +6,9 @@ require (
 	github.com/bytedance/sonic v1.14.2
 	github.com/ghinknet/xormzap v1.0.0
 	github.com/go-playground/validator/v10 v10.28.0
-	github.com/gofiber/contrib/fiberzap/v2 v2.1.7-0.20251010141133-1613afab5911
+	github.com/gofiber/contrib/v3/zap v1.0.0-rc.1
 	github.com/gofiber/fiber/v3 v3.0.0-rc.2
-	github.com/gofiber/utils/v2 v2.0.0-rc.1
+	github.com/gofiber/utils/v2 v2.0.0-rc.2
 	github.com/lib/pq v1.10.9
 	github.com/redis/go-redis/v9 v9.16.0
 	github.com/robfig/cron/v3 v3.0.1
@@ -54,10 +54,10 @@ require (
 	github.com/valyala/fasthttp v1.68.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/arch v0.22.0 // indirect
+	golang.org/x/arch v0.23.0 // indirect
 	golang.org/x/crypto v0.43.0 // indirect
 	golang.org/x/net v0.46.0 // indirect
-	golang.org/x/sys v0.37.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
 	golang.org/x/tools v0.38.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
