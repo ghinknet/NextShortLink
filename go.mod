@@ -3,7 +3,7 @@ module NextShortLink
 go 1.25.3
 
 require (
-	github.com/ghinknet/json v1.0.0
+	github.com/ghinknet/json v1.1.1
 	github.com/ghinknet/xormzap v1.0.0
 	github.com/go-playground/validator/v10 v10.28.0
 	github.com/gofiber/contrib/v3/zap v1.0.0-rc.1

@@ -34,8 +34,8 @@ github.com/fxamacker/cbor/v2 v2.9.0 h1:NpKPmjDBgUfBms6tr6JZkTHtfFGcMKsw3eGcmD/sa
 github.com/fxamacker/cbor/v2 v2.9.0/go.mod h1:vM4b+DJCtHn+zz7h3FFp/hDAI9WNWCsZj23V5ytsSxQ=
 github.com/gabriel-vasile/mimetype v1.4.11 h1:AQvxbp830wPhHTqc1u7nzoLT+ZFxGY7emj5DR5DYFik=
 github.com/gabriel-vasile/mimetype v1.4.11/go.mod h1:d+9Oxyo1wTzWdyVUPMmXFvp4F9tea18J8ufA774AB3s=
-github.com/ghinknet/json v1.0.0 h1:b5x/Xn4OlEMB+A1Uwmnzm4xNMgF0UhO+729Q3gd56aA=
-github.com/ghinknet/json v1.0.0/go.mod h1:8Kh4RPXdzcAUFFqcJB27sslDhSoIM7CfKeGP5GyM7eE=
+github.com/ghinknet/json v1.1.1 h1:VJP6oUR+rdoc9VEgZMj6P5MxmnIo8ReV4wxYYeAC37o=
+github.com/ghinknet/json v1.1.1/go.mod h1:8Kh4RPXdzcAUFFqcJB27sslDhSoIM7CfKeGP5GyM7eE=
 github.com/ghinknet/xormzap v1.0.0 h1:MvSI7bEeitXfiVHRaWdAuDG0gSBxCdhAYaABwxzpTRo=
 github.com/ghinknet/xormzap v1.0.0/go.mod h1:a2Rg8xFWnRUDOsB6RySRsPb8DKi1vVL4xSIpTdXh+/Y=
 github.com/go-playground/assert/v2 v2.2.0 h1:JvknZsQTYeFEAhQwI4qEt9cyV5ONwRHC+lYKSsYSR8s=
