@@ -1,4 +1,3 @@
-debug: true
 index: "https://www.ghink.net"
 server:
   host:

@@ -33,7 +33,7 @@ func InitDB() {
 
 	E.SetLogger(xormzap.Logger(logger.L))
 
-	if config.C.GetBool("debug") {
+	if config.Debug {
 		E.ShowSQL(true)
 	}
 

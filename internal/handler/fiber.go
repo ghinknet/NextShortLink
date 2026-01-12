@@ -94,13 +94,13 @@ func RunHTTPServer() {
 		logger.L.Fatal(server.ListenAndServe().Error())
 	}()
 
-	if config.C.GetBool("debug") {
+	if config.Debug {
 		host := config.C.GetString("server.host")
 		if host == "" {
-			host = "0.0.0.0"
+			host = "[::]"
 		}
 		visit := host
-		if host == "0.0.0.0" {
+		if host == "[::]" || host == "0.0.0.0" {
 			visit = "localhost"
 		}
 

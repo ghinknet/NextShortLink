@@ -2,4 +2,4 @@ package config
 
 const ENName = "NextShortLink"
 const Nickname = "Argon"
-const Version = "1.3.4"
+const Version = "1.4.0"

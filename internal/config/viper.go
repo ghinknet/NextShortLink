@@ -2,12 +2,17 @@ package config
 
 import (
 	"os"
+	"time"
 
+	"github.com/fsnotify/fsnotify"
 	"github.com/ghinknet/json"
 	"github.com/spf13/viper"
 )
 
 var C *viper.Viper
+var OnChange []func()
+var lastLoad time.Time
+var Debug = false
 var Field = make(map[rune]int64)
 
 // staticConfig is constructor of static config
@@ -30,9 +35,13 @@ func staticConfig() *viper.Viper {
 		panic(err)
 	}
 
-	if cfg.GetBool("debug") {
+	// Is debug mode?
+	if _, err = os.Stat("config_debug.yaml"); err == nil {
 		// Init config file
 		cfg.SetConfigName("config_debug")
+
+		// Set debug status
+		Debug = true
 
 		// Read the debug config file
 		err = cfg.ReadInConfig()
@@ -43,6 +52,28 @@ func staticConfig() *viper.Viper {
 
 	// Watch config change
 	cfg.WatchConfig()
+
+	// Record first load
+	lastLoad = time.Now()
+
+	// Trigger to reload
+	cfg.OnConfigChange(func(e fsnotify.Event) {
+		// Debounce
+		if lastLoad.Add(time.Second * 1).After(time.Now()) {
+			return
+		}
+
+		for _, fn := range OnChange {
+			fn()
+		}
+
+		lastLoad = time.Now()
+	})
+
+	// Replace default value
+	if cfg.GetString("host") == "" {
+		cfg.Set("host", "[::]")
+	}
 
 	return cfg
 }
