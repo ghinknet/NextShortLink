@@ -10,6 +10,9 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/ghinknet/toolbox/expr"
+	"github.com/ghinknet/toolbox/pointer"
 )
 
 // AddLink adds a link
@@ -65,18 +68,12 @@ func AddLink(link string, validity *int64) (string, error) {
 
 	linkID := string(linkIDSlice)
 
-	// Calc ttl
-	var ttl time.Duration = 0
-	if validity != nil {
-		ttl = time.Until(time.Unix(*validity, 0))
-	}
-
 	// Record redis cache
 	cache.R.Set(
 		context.Background(),
 		fmt.Sprintf("nextShortLink:links:%s", linkID),
 		link,
-		ttl,
+		expr.Ternary(validity != nil, time.Until(time.Unix(pointer.SafeDeref(validity), 0)), 1*time.Hour),
 	)
 
 	return linkID, nil

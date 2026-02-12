@@ -9,6 +9,9 @@ import (
 	"context"
 	"fmt"
 	"time"
+
+	"github.com/ghinknet/toolbox/expr"
+	"github.com/ghinknet/toolbox/pointer"
 )
 
 // intPow get pow of a int num
@@ -69,18 +72,12 @@ func GetLink(linkID string) (string, error) {
 		return "", err
 	}
 
-	// Calc ttl
-	var ttl time.Duration = 0
-	if validity != nil {
-		ttl = time.Until(time.Unix(*validity, 0))
-	}
-
 	// Record redis cache
 	cache.R.Set(
 		context.Background(),
 		fmt.Sprintf("nextShortLink:links:%s", linkID),
 		link,
-		ttl,
+		expr.Ternary(validity != nil, time.Until(time.Unix(pointer.SafeDeref(validity), 0)), 1*time.Hour),
 	)
 
 	return link, nil
