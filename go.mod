@@ -5,14 +5,14 @@ go 1.26.0
 require (
 	github.com/fsnotify/fsnotify v1.9.0
 	github.com/ghinknet/json v1.1.1
-	github.com/ghinknet/toolbox v1.7.0
+	github.com/ghinknet/toolbox v1.9.0
 	github.com/ghinknet/xormzap v1.0.0
 	github.com/go-playground/validator/v10 v10.30.1
 	github.com/gofiber/contrib/v3/zap v1.0.0
 	github.com/gofiber/fiber/v3 v3.0.0
-	github.com/gofiber/utils/v2 v2.0.1
+	github.com/gofiber/utils/v2 v2.0.2
 	github.com/lib/pq v1.11.2
-	github.com/redis/go-redis/v9 v9.17.3
+	github.com/redis/go-redis/v9 v9.18.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/spf13/viper v1.21.0
 	go.uber.org/zap v1.27.1
@@ -53,6 +53,7 @@ require (
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.69.0 // indirect
+	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/arch v0.24.0 // indirect

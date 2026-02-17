@@ -41,7 +41,7 @@ func main() {
 	defer database.Close(databaseSession)
 	configRepo := repository.NewConfigRepository(databaseSession)
 	if err := configRepo.Init(); err != nil {
-		logger.L.Fatal(err.Error())
+		logger.L.Fatal("failed to init dynamic config", zap.Error(err))
 	}
 
 	// Init cron

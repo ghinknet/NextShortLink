@@ -4,6 +4,7 @@ import (
 	"NextShortLink/internal/logger"
 
 	"github.com/robfig/cron/v3"
+	"go.uber.org/zap"
 )
 
 var C *cron.Cron
@@ -21,6 +22,6 @@ func InitCron() {
 func registerDefault() {
 	_, err := C.AddFunc("@every 30s", deleteExpired)
 	if err != nil {
-		logger.L.Fatal(err.Error())
+		logger.L.Fatal("failed to register default cron 'deleteExpired'", zap.Error(err))
 	}
 }

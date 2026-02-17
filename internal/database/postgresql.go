@@ -5,8 +5,10 @@ import (
 	"NextShortLink/internal/logger"
 	"fmt"
 
+	"github.com/ghinknet/json"
 	"github.com/ghinknet/xormzap"
 	_ "github.com/lib/pq"
+	"go.uber.org/zap"
 	"xorm.io/xorm"
 )
 
@@ -14,6 +16,8 @@ var E *xorm.Engine
 
 // InitDB inits global database connection
 func InitDB() {
+	xorm.SetDefaultJSONHandler(JSON{})
+
 	cfg := DBConfig{
 		Host:     config.C.GetString("database.host"),
 		Port:     config.C.GetInt("database.port"),
@@ -28,7 +32,7 @@ func InitDB() {
 	var err error
 	E, err = xorm.NewEngine("postgres", dsn)
 	if err != nil {
-		logger.L.Fatal(err.Error())
+		logger.L.Fatal("failed to init database", zap.Error(err))
 	}
 
 	E.SetLogger(xormzap.Logger(logger.L))
@@ -37,9 +41,8 @@ func InitDB() {
 		E.ShowSQL(true)
 	}
 
-	err = E.Ping()
-	if err != nil {
-		logger.L.Fatal(err.Error())
+	if err = E.Ping(); err != nil {
+		logger.L.Fatal("failed to ping database", zap.Error(err))
 	}
 
 	logger.L.Debug("PostgresSQL initialized")
@@ -53,6 +56,16 @@ type DBConfig struct {
 	Name     string
 }
 
+type JSON struct{}
+
+func (JSON) Marshal(v any) ([]byte, error) {
+	return json.Marshal(v)
+}
+
+func (JSON) Unmarshal(data []byte, v any) error {
+	return json.Unmarshal(data, v)
+}
+
 // Close is a public method to close a database session
 func Close(databaseSession *xorm.Session) {
 	_ = databaseSession.Close()
@@ -60,8 +73,13 @@ func Close(databaseSession *xorm.Session) {
 
 // Rollback is a public method to roll back a transaction
 func Rollback(session *xorm.Session) {
-	err := session.Rollback()
-	if err != nil {
-		logger.L.Fatal(err.Error())
+	if err := session.Rollback(); err != nil {
+		logger.L.Fatal("failed to rollback transaction", zap.Error(err))
 	}
+}
+
+// RollbackError is a public method to roll back a transaction with errors returned
+func RollbackError(session *xorm.Session, err error) error {
+	Rollback(session)
+	return err
 }

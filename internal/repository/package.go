@@ -28,14 +28,12 @@ func (r *PackageRepository) Take(appID int64, interfaceName string) error {
 		Asc("priority").
 		Find(&packages)
 	if err != nil {
-		database.Rollback(r.session)
-		return err
+		return database.RollbackError(r.session, err)
 	}
 
 	for _, pkg := range packages {
 		if pkg.Unlimit && pkg.AvailableFrom < time.Now().Unix() && pkg.AvailableTo > time.Now().Unix() {
-			database.Rollback(r.session)
-			return nil
+			return database.RollbackError(r.session, nil)
 		}
 	}
 
@@ -48,14 +46,10 @@ func (r *PackageRepository) Take(appID int64, interfaceName string) error {
 					"used": pkg.Used + 1,
 				})
 			if err != nil {
-				database.Rollback(r.session)
-				return err
-			} else {
-				if err = r.session.Commit(); err != nil {
-					return err
-				}
-				return nil
+				return database.RollbackError(r.session, err)
 			}
+
+			return r.session.Commit()
 		}
 	}
 

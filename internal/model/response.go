@@ -51,7 +51,8 @@ func RespTooManyRequests(c fiber.Ctx) error {
 func RespInternalServerError(c fiber.Ctx, err error) error {
 	requestID := requestid.FromContext(c)
 	logger.L.Error(
-		err.Error(),
+		"internal server error happened",
+		zap.Error(err),
 		zap.String("requestID", requestID),
 	)
 	return Resp(c, http.StatusInternalServerError, nil, "internal server error")
