@@ -7,7 +7,6 @@ import (
 	"NextShortLink/internal/model"
 	"NextShortLink/internal/repository"
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/ghinknet/toolbox/expr"
@@ -36,7 +35,7 @@ func GetLink(linkID string) (string, error) {
 	// Check redis cache
 	exists, err := cache.R.Exists(
 		context.Background(),
-		fmt.Sprintf("nextShortLink:links:%s", linkID),
+		cache.GenKey("link", linkID),
 	).Result()
 	if err != nil {
 		return "", err
@@ -44,7 +43,7 @@ func GetLink(linkID string) (string, error) {
 	if exists > 0 {
 		link, err := cache.R.Get(
 			context.Background(),
-			fmt.Sprintf("nextShortLink:links:%s", linkID),
+			cache.GenKey("link", linkID),
 		).Result()
 		if err != nil {
 			return "", err
@@ -75,7 +74,7 @@ func GetLink(linkID string) (string, error) {
 	// Record redis cache
 	cache.R.Set(
 		context.Background(),
-		fmt.Sprintf("nextShortLink:links:%s", linkID),
+		cache.GenKey("link", linkID),
 		link,
 		expr.Ternary(validity != nil, time.Until(time.Unix(pointer.SafeDeref(validity), 0)), 1*time.Hour),
 	)

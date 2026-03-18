@@ -16,7 +16,7 @@ import (
 
 func main() {
 	// Load static config
-	config.LoadStatic()
+	config.Load()
 
 	// Init logger
 	logger.InitLogger()

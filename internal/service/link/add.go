@@ -7,7 +7,6 @@ import (
 	"NextShortLink/internal/model"
 	"NextShortLink/internal/repository"
 	"context"
-	"fmt"
 	"strings"
 	"time"
 
@@ -71,7 +70,7 @@ func AddLink(link string, validity *int64) (string, error) {
 	// Record redis cache
 	cache.R.Set(
 		context.Background(),
-		fmt.Sprintf("nextShortLink:links:%s", linkID),
+		cache.GenKey("link", linkID),
 		link,
 		expr.Ternary(validity != nil, time.Until(time.Unix(pointer.SafeDeref(validity), 0)), 1*time.Hour),
 	)

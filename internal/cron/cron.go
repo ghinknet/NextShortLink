@@ -20,8 +20,7 @@ func InitCron() {
 
 // registerDefault registers default cron tasks
 func registerDefault() {
-	_, err := C.AddFunc("@every 30s", deleteExpired)
-	if err != nil {
+	if _, err := C.AddFunc("@every 30s", deleteExpired); err != nil {
 		logger.L.Fatal("failed to register default cron 'deleteExpired'", zap.Error(err))
 	}
 }

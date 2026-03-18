@@ -5,7 +5,6 @@ import (
 	"NextShortLink/internal/database"
 	"NextShortLink/internal/model"
 	"NextShortLink/internal/repository"
-	"NextShortLink/pkg/web"
 	"context"
 	"crypto/sha256"
 	"errors"
@@ -14,6 +13,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ghinknet/toolbox/expr"
 	"github.com/gofiber/fiber/v3"
 )
 
@@ -25,8 +25,7 @@ func CheckPermissionApplication(c fiber.Ctx) error {
 	now := time.Now().Unix()
 
 	// Get client IP
-	IP := web.ClientIP(c)
-	ParsedIP := net.ParseIP(IP)
+	ParsedIP := net.ParseIP(expr.Ternary(len(c.IPs()) > 0, c.IPs(), []string{c.IP()})[0])
 
 	// Get credential
 	authorization := c.Get("Authorization")
@@ -56,15 +55,15 @@ func CheckPermissionApplication(c fiber.Ctx) error {
 	if Token != "" {
 		exists, err := cache.R.Exists(
 			context.Background(),
-			fmt.Sprintf("nextShortLink:token:%s", Token),
+			cache.GenKey("token", Token),
 		).Result()
 		if err != nil {
 			return model.RespInternalServerError(c, err)
 		}
 		if exists > 0 {
-			authorization, err := cache.R.Get(
+			authorization, err = cache.R.Get(
 				context.Background(),
-				fmt.Sprintf("nextShortLink:token:%s", Token),
+				cache.GenKey("token", Token),
 			).Result()
 			if err != nil {
 				return model.RespInternalServerError(c, err)
@@ -88,9 +87,9 @@ func CheckPermissionApplication(c fiber.Ctx) error {
 	if err != nil {
 		if errors.Is(err, model.ErrApplicationNotFound) {
 			return model.RespApplicationNotFound(c)
-		} else {
-			return model.RespInternalServerError(c, err)
 		}
+
+		return model.RespInternalServerError(c, err)
 	}
 	if id == 0 {
 		return model.RespPermissionDenied(c)
@@ -105,9 +104,9 @@ func CheckPermissionApplication(c fiber.Ctx) error {
 	if err != nil {
 		if errors.Is(err, model.ErrPermissionDenied) {
 			return model.RespPermissionDenied(c)
-		} else {
-			return model.RespInternalServerError(c, err)
 		}
+
+		return model.RespInternalServerError(c, err)
 	}
 
 	// Check authentication method limit
@@ -178,9 +177,9 @@ func CheckPermissionApplication(c fiber.Ctx) error {
 	if err != nil {
 		if errors.Is(err, model.ErrNoPackageAvailable) {
 			return model.RespNoPackageAvailable(c)
-		} else {
-			return model.RespInternalServerError(c, err)
 		}
+
+		return model.RespInternalServerError(c, err)
 	}
 
 	return c.Next()

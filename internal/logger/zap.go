@@ -46,14 +46,13 @@ func InitLogger() {
 	cores = append(cores, stdoutCore)
 
 	// Output to log file
-	logFile := config.C.GetString("log.file")
-	if logFile != "" {
+	if config.Get().Log.File != "" {
 		fileWriter := &lumberjack.Logger{
-			Filename:   logFile,
-			MaxSize:    config.C.GetInt("log.maxSize"),
-			MaxBackups: config.C.GetInt("log.maxBackups"),
-			MaxAge:     config.C.GetInt("log.maxAge"),
-			Compress:   config.C.GetBool("log.compress"),
+			Filename:   config.Get().Log.File,
+			MaxSize:    config.Get().Log.MaxSize,
+			MaxBackups: config.Get().Log.MaxBackups,
+			MaxAge:     config.Get().Log.MaxAge,
+			Compress:   config.Get().Log.Compress,
 			LocalTime:  true,
 		}
 

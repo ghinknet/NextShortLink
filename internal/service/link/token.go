@@ -40,7 +40,7 @@ func IssueToken(secretID string, secretKey string) (string, error) {
 		// Check whether the token exists
 		exists, err := cache.R.Exists(
 			context.Background(),
-			fmt.Sprintf("nextShortLink:token:%s", token),
+			cache.GenKey("token", token),
 		).Result()
 		if err != nil {
 			return "", err
@@ -52,13 +52,12 @@ func IssueToken(secretID string, secretKey string) (string, error) {
 	}
 
 	// Record token
-	err := cache.R.Set(
+	if err := cache.R.Set(
 		context.Background(),
-		fmt.Sprintf("nextShortLink:token:%s", token),
+		cache.GenKey("token", token),
 		fmt.Sprintf("%s:%s", secretID, secretKey),
 		time.Hour*1,
-	).Err()
-	if err != nil {
+	).Err(); err != nil {
 		return "", err
 	}
 

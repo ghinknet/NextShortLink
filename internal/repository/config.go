@@ -30,17 +30,15 @@ func (r *ConfigRepository) Get() (*model.DatabaseConfig, error) {
 }
 
 func (r *ConfigRepository) Init() error {
-	_, err := r.Get()
-	if err != nil {
+	if _, err := r.Get(); err != nil {
 		if !errors.Is(err, model.ErrConfigError) {
 			return err
-		} else {
-			_, err = r.session.Insert(model.DatabaseConfig{
-				Value: model.DefaultConfig,
-			})
-			if err != nil {
-				return err
-			}
+		}
+
+		if _, err = r.session.Insert(model.DatabaseConfig{
+			Value: model.DefaultConfig,
+		}); err != nil {
+			return err
 		}
 	}
 	return nil

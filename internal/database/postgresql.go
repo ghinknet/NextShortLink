@@ -18,21 +18,19 @@ var E *xorm.Engine
 func InitDB() {
 	xorm.SetDefaultJSONHandler(JSON{})
 
-	cfg := DBConfig{
-		Host:     config.C.GetString("database.host"),
-		Port:     config.C.GetInt("database.port"),
-		User:     config.C.GetString("database.user"),
-		Name:     config.C.GetString("database.name"),
-		Password: config.C.GetString("database.password"),
-	}
-
-	dsn := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
-		cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.Name)
+	dsn := fmt.Sprintf(
+		"postgres://%s:%s@%s:%d/%s?sslmode=disable",
+		config.Get().Database.User,
+		config.Get().Database.Password,
+		config.Get().Database.Host,
+		config.Get().Database.Port,
+		config.Get().Database.Name,
+	)
 
 	var err error
 	E, err = xorm.NewEngine("postgres", dsn)
 	if err != nil {
-		logger.L.Fatal("failed to init database", zap.Error(err))
+		logger.L.Fatal("failed to init database", zap.Error(err), zap.String("dsn", dsn))
 	}
 
 	E.SetLogger(xormzap.Logger(logger.L))
@@ -46,14 +44,6 @@ func InitDB() {
 	}
 
 	logger.L.Debug("PostgresSQL initialized")
-}
-
-type DBConfig struct {
-	Host     string
-	Port     int
-	User     string
-	Password string
-	Name     string
 }
 
 type JSON struct{}

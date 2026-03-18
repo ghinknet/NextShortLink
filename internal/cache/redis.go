@@ -2,9 +2,11 @@ package cache
 
 import (
 	"NextShortLink/internal/config"
+	"NextShortLink/internal/env"
 	"NextShortLink/internal/logger"
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -13,7 +15,7 @@ var R *redis.Client
 
 type NOOPLogger struct{}
 
-func (NOOPLogger) Printf(ctx context.Context, format string, v ...interface{}) {
+func (NOOPLogger) Printf(ctx context.Context, format string, v ...any) {
 	// Do nothing here
 }
 
@@ -23,12 +25,20 @@ func InitRedis() {
 	R = redis.NewClient(&redis.Options{
 		Addr: fmt.Sprintf(
 			"%s:%d",
-			config.C.GetString("redis.host"),
-			config.C.GetInt("redis.port"),
+			config.Get().Redis.Host,
+			config.Get().Redis.Port,
 		),
-		Password: config.C.GetString("redis.password"),
-		DB:       config.C.GetInt("redis.db"),
+		Password: config.Get().Redis.Password,
+		DB:       config.Get().Redis.DB,
 	})
 
 	logger.L.Debug("Redis initialized")
+}
+
+func GenKey(keys ...string) string {
+	return fmt.Sprintf(
+		"%s:%s",
+		env.ENName,
+		strings.Join(keys, ":"),
+	)
 }

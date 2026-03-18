@@ -18,8 +18,7 @@ func deleteExpired() {
 	linkRepo := repository.NewLinkRepository(databaseSession)
 
 	// Delete expired link
-	err := linkRepo.DeleteExpired()
-	if err != nil {
+	if err := linkRepo.DeleteExpired(); err != nil {
 		logger.L.Error("Delete expired links failed", zap.Error(err))
 	}
 }

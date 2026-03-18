@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	"github.com/ghinknet/json"
+	"github.com/ghinknet/toolbox/expr"
 	"github.com/go-playground/validator/v10"
 	fiberzap "github.com/gofiber/contrib/v3/zap"
 	"github.com/gofiber/fiber/v3"
@@ -17,8 +18,6 @@ import (
 	"github.com/gofiber/utils/v2"
 	"go.uber.org/zap"
 )
-
-var app *fiber.App
 
 // structValidator struct implementation
 type structValidator struct {
@@ -37,6 +36,7 @@ func fiberAPP() *fiber.App {
 		JSONDecoder:     json.Unmarshal,
 		ProxyHeader:     fiber.HeaderXForwardedFor,
 		StructValidator: &structValidator{validate: validator.New()},
+		ErrorHandler:    model.RespInternalServerError,
 	})
 
 	// Use requestID middleware
@@ -49,10 +49,10 @@ func fiberAPP() *fiber.App {
 	// Use global logger
 	app.Use(fiberzap.New(fiberzap.Config{
 		Logger: logger.L,
+		Fields: []string{"latency", "status", "method", "url", "requestId", "ua"},
 		FieldsFunc: func(c fiber.Ctx) []zap.Field {
-			requestID := requestid.FromContext(c)
 			return []zap.Field{
-				zap.String("requestID", requestID),
+				zap.String("ip", expr.Ternary(len(c.IPs()) > 0, c.IPs(), []string{c.IP()})[0]),
 			}
 		},
 	}))
@@ -62,7 +62,7 @@ func fiberAPP() *fiber.App {
 
 	// Root info router handler
 	app.Get("/", func(c fiber.Ctx) error {
-		return c.Redirect().Status(http.StatusFound).To(config.C.GetString("index"))
+		return c.Redirect().Status(http.StatusFound).To(config.Get().Index)
 	})
 
 	// Register global routes
@@ -79,11 +79,11 @@ func fiberAPP() *fiber.App {
 // RunHTTPServer runs a HTTP server
 func RunHTTPServer() {
 	// Create Fiber app
-	app = fiberAPP()
+	app := fiberAPP()
 
-	// Use fiber as handler
+	// Use Fiber as handler
 	server := &http.Server{
-		Addr:    fmt.Sprintf("%s:%d", config.C.GetString("server.host"), config.C.GetInt("server.port")),
+		Addr:    fmt.Sprintf("%s:%d", config.Get().Server.Host, config.Get().Server.Port),
 		Handler: adaptor.FiberApp(app),
 	}
 
@@ -91,11 +91,11 @@ func RunHTTPServer() {
 
 	// Start HTTP server
 	go func() {
-		logger.L.Fatal(server.ListenAndServe().Error())
+		logger.L.Fatal("Failed to start main http service", zap.Error(server.ListenAndServe()))
 	}()
 
 	if config.Debug {
-		host := config.C.GetString("server.host")
+		host := config.Get().Server.Host
 		if host == "" {
 			host = "[::]"
 		}
@@ -104,7 +104,7 @@ func RunHTTPServer() {
 			visit = "localhost"
 		}
 
-		logger.L.Info(fmt.Sprintf("Server is running on %s:%d", host, config.C.GetInt("server.port")))
-		logger.L.Debug(fmt.Sprintf("Visit by http://%s:%d", visit, config.C.GetInt("server.port")))
+		logger.L.Info(fmt.Sprintf("Server is running on %s:%d", host, config.Get().Server.Port))
+		logger.L.Debug(fmt.Sprintf("Visit by %s:%d", visit, config.Get().Server.Port))
 	}
 }

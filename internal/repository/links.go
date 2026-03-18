@@ -29,8 +29,7 @@ func (r *LinkRepository) Read(linkID int64) (string, *int64, error) {
 	}
 
 	if link.Validity != nil && *link.Validity < time.Now().Unix() {
-		_, err = r.session.ID(linkID).Delete(link)
-		if err != nil {
+		if _, err = r.session.ID(linkID).Delete(link); err != nil {
 			return "", nil, err
 		}
 		return "", nil, model.ErrLinkNotExist
@@ -40,8 +39,7 @@ func (r *LinkRepository) Read(linkID int64) (string, *int64, error) {
 }
 
 func (r *LinkRepository) Insert(link *model.DatabaseLink) error {
-	_, err := r.session.Insert(link)
-	if err != nil {
+	if _, err := r.session.Insert(link); err != nil {
 		return err
 	}
 
@@ -53,8 +51,6 @@ func (r *LinkRepository) Insert(link *model.DatabaseLink) error {
 
 func (r *LinkRepository) DeleteExpired() error {
 	_, err := r.session.Where("validity < EXTRACT(EPOCH FROM NOW())").Delete(&model.DatabaseLink{})
-	if err != nil {
-		return err
-	}
-	return nil
+
+	return err
 }
