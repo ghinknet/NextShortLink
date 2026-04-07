@@ -50,7 +50,7 @@ func (r *LinkRepository) Insert(link *model.DatabaseLink) error {
 }
 
 func (r *LinkRepository) DeleteExpired() error {
-	_, err := r.session.Where("validity < EXTRACT(EPOCH FROM NOW())").Delete(&model.DatabaseLink{})
+	_, err := r.session.Where("validity < EXTRACT(EPOCH FROM NOW())").Delete(new(model.DatabaseLink))
 
 	return err
 }

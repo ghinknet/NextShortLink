@@ -1,15 +1,5 @@
 package model
 
-// DatabaseConfig table 'config'
-type DatabaseConfig struct {
-	Key   int64        `xorm:"pk int notnull 'key'"`
-	Value SystemConfig `xorm:"jsonb notnull 'value'"`
-}
-
-func (DatabaseConfig) TableName() string {
-	return "config"
-}
-
 // DatabaseApplication table 'application'
 type DatabaseApplication struct {
 	ID        int64  `xorm:"pk autoincr 'id'"`

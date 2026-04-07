@@ -1,9 +1,9 @@
 package link
 
 import (
-	"NextShortLink/internal/cache"
-	"NextShortLink/internal/config"
-	"NextShortLink/internal/database"
+	"NextShortLink/internal/infra/cache"
+	"NextShortLink/internal/infra/config"
+	"NextShortLink/internal/infra/database"
 	"NextShortLink/internal/model"
 	"NextShortLink/internal/repository"
 	"context"

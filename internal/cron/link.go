@@ -1,8 +1,8 @@
 package cron
 
 import (
-	"NextShortLink/internal/database"
-	"NextShortLink/internal/logger"
+	"NextShortLink/internal/infra/database"
+	"NextShortLink/internal/infra/logger"
 	"NextShortLink/internal/repository"
 
 	"go.uber.org/zap"

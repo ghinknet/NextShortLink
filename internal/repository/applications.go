@@ -15,7 +15,7 @@ func NewApplicationRepository(session *xorm.Session) *ApplicationRepository {
 }
 
 func (r *ApplicationRepository) Get(secretID string, secretKey string) (id int64, err error) {
-	application := &model.DatabaseApplication{}
+	application := new(model.DatabaseApplication)
 	has, err := r.session.Where("secret_id = ?", secretID).
 		Where("secret_key = ?", secretKey).
 		Get(application)

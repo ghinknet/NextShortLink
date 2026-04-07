@@ -1,7 +1,7 @@
 package model
 
 import (
-	"NextShortLink/internal/logger"
+	"NextShortLink/internal/infra/logger"
 	"net/http"
 
 	"github.com/gofiber/fiber/v3"

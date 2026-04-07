@@ -1,7 +1,7 @@
 package cron
 
 import (
-	"NextShortLink/internal/logger"
+	"NextShortLink/internal/infra/logger"
 
 	"github.com/robfig/cron/v3"
 	"go.uber.org/zap"

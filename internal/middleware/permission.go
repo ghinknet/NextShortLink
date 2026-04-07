@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"NextShortLink/internal/cache"
-	"NextShortLink/internal/database"
+	"NextShortLink/internal/infra/cache"
+	"NextShortLink/internal/infra/database"
 	"NextShortLink/internal/model"
 	"NextShortLink/internal/repository"
 	"context"

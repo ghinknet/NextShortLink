@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"NextShortLink/internal/database"
+	"NextShortLink/internal/infra/database"
 	"NextShortLink/internal/model"
 	"time"
 
@@ -41,7 +41,7 @@ func (r *PackageRepository) Take(appID int64, interfaceName string) error {
 			if _, err := r.session.
 				Where("id = ?", pkg.ID).
 				Incr("used", 1).
-				Update(&model.DatabasePackage{}); err != nil {
+				Update(new(model.DatabasePackage)); err != nil {
 				return database.RollbackError(r.session, err)
 			}
 

@@ -1,11 +1,11 @@
 package link
 
 import (
-	"NextShortLink/internal/cache"
+	"NextShortLink/internal/infra/cache"
 	"context"
 	"crypto/rand"
-	"fmt"
 	"math/big"
+	"strings"
 	"time"
 )
 
@@ -37,28 +37,35 @@ func IssueToken(secretID string, secretKey string) (string, error) {
 			result = []byte{base62Chars[0]}
 		}
 
-		// Check whether the token exists
-		exists, err := cache.R.Exists(
+		token = string(result)
+		tokenKey := cache.GenKey("token", token)
+		tokenValue := strings.Join([]string{secretID, secretKey}, ":")
+
+		// Use SET with NX and EX options for atomic operation to avoid race condition
+		// Only set if key doesn't exist
+		cmd := cache.R.Do(
 			context.Background(),
-			cache.GenKey("token", token),
-		).Result()
+			"SET",
+			tokenKey,
+			tokenValue,
+			"NX",
+			"EX",
+			time.Hour.Seconds(),
+		)
+		if cmd.Err() != nil {
+			return "", cmd.Err()
+		}
+
+		// Result returns "OK" if SET was successful (when NX condition is met)
+		value, err := cmd.Result()
 		if err != nil {
 			return "", err
 		}
-		if exists == 0 {
-			token = string(result)
+		if val, ok := value.(string); ok && val == "OK" {
+			// Successfully set the token
 			break
 		}
-	}
-
-	// Record token
-	if err := cache.R.Set(
-		context.Background(),
-		cache.GenKey("token", token),
-		fmt.Sprintf("%s:%s", secretID, secretKey),
-		time.Hour*1,
-	).Err(); err != nil {
-		return "", err
+		// Token already exists, regenerate and retry
 	}
 
 	return token, nil

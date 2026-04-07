@@ -1,8 +1,8 @@
 package database
 
 import (
-	"NextShortLink/internal/config"
-	"NextShortLink/internal/logger"
+	"NextShortLink/internal/infra/config"
+	"NextShortLink/internal/infra/logger"
 	"fmt"
 
 	"github.com/ghinknet/json"

@@ -1,8 +1,3 @@
-CREATE TABLE config (
-    key   INTEGER PRIMARY KEY,
-    value JSONB   NOT NULL
-);
-
 CREATE TABLE application (
     id         SERIAL PRIMARY KEY,
     secret_id  TEXT   NOT NULL UNIQUE,

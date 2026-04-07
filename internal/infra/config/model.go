@@ -7,11 +7,14 @@ type StaticConfig struct {
 		Port int    `yaml:"port"`
 	} `yaml:"server"`
 	Log struct {
-		File       string `yaml:"file"`
-		MaxSize    int    `yaml:"maxSize"`
-		MaxBackups int    `yaml:"maxBackups"`
-		MaxAge     int    `yaml:"maxAge"`
-		Compress   bool   `yaml:"compress"`
+		File struct {
+			All string `yaml:"all"`
+			Err string `yaml:"err"`
+		} `yaml:"file"`
+		MaxSize    int  `yaml:"maxSize"`
+		MaxBackups int  `yaml:"maxBackups"`
+		MaxAge     int  `yaml:"maxAge"`
+		Compress   bool `yaml:"compress"`
 	} `yaml:"log"`
 	Database struct {
 		Host     string `yaml:"host"`

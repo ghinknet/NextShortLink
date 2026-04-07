@@ -1,13 +1,12 @@
 package main
 
 import (
-	"NextShortLink/internal/cache"
-	"NextShortLink/internal/config"
 	"NextShortLink/internal/cron"
-	"NextShortLink/internal/database"
 	"NextShortLink/internal/handler"
-	"NextShortLink/internal/logger"
-	"NextShortLink/internal/repository"
+	"NextShortLink/internal/infra/cache"
+	"NextShortLink/internal/infra/config"
+	"NextShortLink/internal/infra/database"
+	"NextShortLink/internal/infra/logger"
 
 	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
@@ -35,14 +34,6 @@ func main() {
 	defer func(E *xorm.Engine) {
 		_ = E.Close()
 	}(database.E)
-
-	// Init dynamic config
-	databaseSession := database.E.NewSession()
-	defer database.Close(databaseSession)
-	configRepo := repository.NewConfigRepository(databaseSession)
-	if err := configRepo.Init(); err != nil {
-		logger.L.Fatal("failed to init dynamic config", zap.Error(err))
-	}
 
 	// Init cron
 	cron.InitCron()

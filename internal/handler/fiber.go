@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"NextShortLink/internal/config"
-	"NextShortLink/internal/logger"
+	"NextShortLink/internal/infra/config"
+	"NextShortLink/internal/infra/logger"
 	"NextShortLink/internal/middleware"
 	"NextShortLink/internal/model"
 	"fmt"
@@ -14,6 +14,7 @@ import (
 	fiberzap "github.com/gofiber/contrib/v3/zap"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/adaptor"
+	recoverer "github.com/gofiber/fiber/v3/middleware/recover"
 	"github.com/gofiber/fiber/v3/middleware/requestid"
 	"github.com/gofiber/utils/v2"
 	"go.uber.org/zap"
@@ -38,6 +39,9 @@ func fiberAPP() *fiber.App {
 		StructValidator: &structValidator{validate: validator.New()},
 		ErrorHandler:    model.RespInternalServerError,
 	})
+	
+	// Use recoverer
+	app.Use(recoverer.New())
 
 	// Use requestID middleware
 	app.Use(requestid.New(requestid.Config{

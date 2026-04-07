@@ -1,9 +1,11 @@
 package env
 
-import "fmt"
+import (
+	"strings"
+)
 
 const ENName = "NextShortLink"
 const Nickname = "Argon"
-const Version = "1.4.4"
+const Version = "1.4.5"
 
-var PoweredByText = fmt.Sprintf("%s %s %s", ENName, Version, Nickname)
+var PoweredByText = strings.Join([]string{ENName, Version, Nickname}, " ")

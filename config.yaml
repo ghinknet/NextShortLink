@@ -3,9 +3,11 @@ server:
   host:
   port: 8000
 log:
-  file: "logs/app.log"
-  maxSize: 100
-  maxBackups: 10
+  file:
+    all: "logs/app.log"
+    err: "logs/err.log"
+  maxSize: 5
+  maxBackups: 100
   maxAge: 30
   compress: true
 database:

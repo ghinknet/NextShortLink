@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"NextShortLink/internal/config"
+	"NextShortLink/internal/infra/config"
 	"os"
 
 	"go.uber.org/zap"
@@ -46,9 +46,10 @@ func InitLogger() {
 	cores = append(cores, stdoutCore)
 
 	// Output to log file
-	if config.Get().Log.File != "" {
+	if config.Get().Log.File.All != "" {
+		// Normal log output
 		fileWriter := &lumberjack.Logger{
-			Filename:   config.Get().Log.File,
+			Filename:   config.Get().Log.File.All,
 			MaxSize:    config.Get().Log.MaxSize,
 			MaxBackups: config.Get().Log.MaxBackups,
 			MaxAge:     config.Get().Log.MaxAge,
@@ -62,6 +63,24 @@ func InitLogger() {
 			level,
 		)
 		cores = append(cores, fileCore)
+	}
+
+	if config.Get().Log.File.Err != "" {
+		// Error log output
+		errWriter := &lumberjack.Logger{
+			Filename:   config.Get().Log.File.Err,
+			MaxSize:    config.Get().Log.MaxSize,
+			MaxBackups: config.Get().Log.MaxBackups,
+			MaxAge:     config.Get().Log.MaxAge,
+			Compress:   config.Get().Log.Compress,
+			LocalTime:  true,
+		}
+		errCore := zapcore.NewCore(
+			zapcore.NewJSONEncoder(encoderConfig),
+			zapcore.AddSync(errWriter),
+			zapcore.WarnLevel, // Only record Warn、Error、Fatal、Panic
+		)
+		cores = append(cores, errCore)
 	}
 
 	// Create zap core
