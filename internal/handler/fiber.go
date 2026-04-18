@@ -13,7 +13,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	fiberzap "github.com/gofiber/contrib/v3/zap"
 	"github.com/gofiber/fiber/v3"
-	"github.com/gofiber/fiber/v3/middleware/adaptor"
 	recoverer "github.com/gofiber/fiber/v3/middleware/recover"
 	"github.com/gofiber/fiber/v3/middleware/requestid"
 	"github.com/gofiber/utils/v2"
@@ -39,7 +38,7 @@ func fiberAPP() *fiber.App {
 		StructValidator: &structValidator{validate: validator.New()},
 		ErrorHandler:    model.RespInternalServerError,
 	})
-	
+
 	// Use recoverer
 	app.Use(recoverer.New())
 
@@ -85,17 +84,11 @@ func RunHTTPServer() {
 	// Create Fiber app
 	app := fiberAPP()
 
-	// Use Fiber as handler
-	server := &http.Server{
-		Addr:    fmt.Sprintf("%s:%d", config.Get().Server.Host, config.Get().Server.Port),
-		Handler: adaptor.FiberApp(app),
-	}
+	addr := fmt.Sprintf("%s:%d", config.Get().Server.Host, config.Get().Server.Port)
 
-	server.SetKeepAlivesEnabled(true)
-
-	// Start HTTP server
+	// Start HTTP server with Fiber native listener
 	go func() {
-		logger.L.Fatal("Failed to start main http service", zap.Error(server.ListenAndServe()))
+		logger.L.Fatal("Failed to start main http service", zap.Error(app.Listen(addr)))
 	}()
 
 	if config.Debug {

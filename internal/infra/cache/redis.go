@@ -1,9 +1,9 @@
 package cache
 
 import (
-	"NextShortLink/internal/env"
 	"NextShortLink/internal/infra/config"
 	"NextShortLink/internal/infra/logger"
+	"NextShortLink/internal/meta"
 	"context"
 	"fmt"
 	"strings"
@@ -37,7 +37,7 @@ func InitRedis() {
 
 func GenKey(keys ...string) string {
 	return strings.Join([]string{
-		env.ENName,
+		meta.ENName,
 		strings.Join(keys, ":"),
 	}, ":")
 }

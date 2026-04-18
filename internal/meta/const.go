@@ -1,4 +1,4 @@
-package env
+package meta
 
 import (
 	"strings"
@@ -6,6 +6,6 @@ import (
 
 const ENName = "NextShortLink"
 const Nickname = "Argon"
-const Version = "1.4.5"
+const Version = "1.5.1 "
 
 var PoweredByText = strings.Join([]string{ENName, Version, Nickname}, " ")
