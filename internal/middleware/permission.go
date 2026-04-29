@@ -13,8 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ghinknet/toolbox/expr"
 	"github.com/gofiber/fiber/v3"
+	"go.gh.ink/toolbox/fiber/v3/ip"
 )
 
 var requestHistory = make([]model.RequestHistory, 0)
@@ -25,7 +25,7 @@ func CheckPermissionApplication(c fiber.Ctx) error {
 	now := time.Now().Unix()
 
 	// Get client IP
-	ParsedIP := net.ParseIP(expr.Ternary(len(c.IPs()) > 0, c.IPs(), []string{c.IP()})[0])
+	ParsedIP := net.ParseIP(ip.GetIP(c))
 
 	// Get credential
 	authorization := c.Get("Authorization")

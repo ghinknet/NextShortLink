@@ -5,9 +5,9 @@ import (
 	"NextShortLink/internal/infra/logger"
 	"fmt"
 
-	"github.com/ghinknet/json"
-	"github.com/ghinknet/xormzap"
 	_ "github.com/lib/pq"
+	"go.gh.ink/json"
+	"go.gh.ink/xormzap"
 	"go.uber.org/zap"
 	"xorm.io/xorm"
 )

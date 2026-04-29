@@ -7,8 +7,8 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/ghinknet/json"
 	"github.com/spf13/viper"
+	"go.gh.ink/json"
 )
 
 var config StaticConfig

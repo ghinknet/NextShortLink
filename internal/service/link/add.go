@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ghinknet/toolbox/expr"
-	"github.com/ghinknet/toolbox/pointer"
+	"go.gh.ink/toolbox/expr"
+	"go.gh.ink/toolbox/pointer"
 )
 
 // AddLink adds a link

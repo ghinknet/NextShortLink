@@ -9,8 +9,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/ghinknet/toolbox/expr"
-	"github.com/ghinknet/toolbox/pointer"
+	"go.gh.ink/toolbox/expr"
+	"go.gh.ink/toolbox/pointer"
 )
 
 // intPow get pow of a int num

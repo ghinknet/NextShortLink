@@ -8,14 +8,14 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/ghinknet/json"
-	"github.com/ghinknet/toolbox/expr"
 	"github.com/go-playground/validator/v10"
 	fiberzap "github.com/gofiber/contrib/v3/zap"
 	"github.com/gofiber/fiber/v3"
 	recoverer "github.com/gofiber/fiber/v3/middleware/recover"
 	"github.com/gofiber/fiber/v3/middleware/requestid"
 	"github.com/gofiber/utils/v2"
+	"go.gh.ink/json"
+	"go.gh.ink/toolbox/fiber/v3/ip"
 	"go.uber.org/zap"
 )
 
@@ -55,7 +55,7 @@ func fiberAPP() *fiber.App {
 		Fields: []string{"latency", "status", "method", "url", "requestId", "ua"},
 		FieldsFunc: func(c fiber.Ctx) []zap.Field {
 			return []zap.Field{
-				zap.String("ip", expr.Ternary(len(c.IPs()) > 0, c.IPs(), []string{c.IP()})[0]),
+				zap.String("ip", ip.GetIP(c)),
 			}
 		},
 	}))

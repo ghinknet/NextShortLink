@@ -19,21 +19,15 @@ func main() {
 
 	// Init logger
 	logger.InitLogger()
-	defer func(L *zap.Logger) {
-		_ = L.Sync()
-	}(logger.L)
+	defer func(L *zap.Logger) { _ = L.Sync() }(logger.L)
 
 	// Init redis
 	cache.InitRedis()
-	defer func(R *redis.Client) {
-		_ = R.Close()
-	}(cache.R)
+	defer func(R *redis.Client) { _ = R.Close() }(cache.R)
 
 	// Init database
 	database.InitDB()
-	defer func(E *xorm.Engine) {
-		_ = E.Close()
-	}(database.E)
+	defer func(E *xorm.Engine) { _ = E.Close() }(database.E)
 
 	// Init cron
 	cron.InitCron()
